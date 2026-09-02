@@ -57,12 +57,42 @@ vector<int> next_permutation(vector<vector<int>> ans , vector<int> nums){
     return {};
 }
 
+
+void next_permutation_optimized(vector<int> &nums , int n){
+    // finding the breaking point where nums[i] < nums[i+1]
+    int index = -1;
+    for(int i = n-2 ; i >= 0 ; i--){
+        if(nums[i] < nums[i+1]){
+            index = i;
+        }
+    }
+
+    // edge case handling if no such breaking point 
+    if(index == -1){
+        reverse(nums.begin(),nums.end());
+    }
+
+    // now again finding the number just greater than nums[index]
+    for (int i = n-1; i > index; i--)
+    {
+        if(nums[i] > nums[index]){
+            swap(nums[i],nums[index]);
+            break;
+        }
+    }
+    
+
+    // reverse the rest part from index+1 -> end 
+    reverse(nums.begin()+index+1, nums.end());
+}
+
+
 int main() {
 
     vector<int> nums = {1,3,2};
     int n = nums.size();
 
-    vector<vector<int>> all_permutations = generate_permutations(nums, n);
+    // vector<vector<int>> all_permutations = generate_permutations(nums, n);
 
     // for (auto permutation : ans) {
 
@@ -73,11 +103,19 @@ int main() {
     //     cout << endl;
     // }
 
-    vector<int> ans = next_permutation(all_permutations,nums);
+    // vector<int> ans = next_permutation(all_permutations,nums);
 
-    for(auto x : ans){
-        cout<<x<<" ";
+    // for(auto x : ans){
+    //     cout<<x<<" ";
+    // }
+
+    next_permutation_optimized(nums,n);
+
+    for (auto it : nums)
+    {
+        cout<<it<<" ";
     }
+    
 
     return 0;
 }
